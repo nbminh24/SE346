@@ -1,13 +1,38 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen";
+import EmployeeList from "./screens/EmployeeList";
+import EmployeeDetail from "./screens/EmployeeDetail";
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  if (!isLoggedIn) {
+    return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
+  }
+
   return (
-    <View style={{ flex: 1 }}>{isLoggedIn ? <HomeScreen /> : <LoginScreen onLogin={() => setIsLoggedIn(true)} />}</View>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {/* Màn hình danh sách nhân viên */}
+          <Stack.Screen
+            name="EmployeeList"
+            component={EmployeeList}
+            options={{ title: "Employee List" }}
+          />
+          {/* Màn hình chi tiết nhân viên */}
+          <Stack.Screen
+            name="EmployeeDetail"
+            component={EmployeeDetail}
+            options={{ title: "Employee Detail" }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 
